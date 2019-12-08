@@ -4,17 +4,12 @@ configure({ enforceActions: 'observed' });
 class ApartmentStore {
   freeApartments = [];
   rentedAppartments = [];
-  repairTypes = {};
+  repairTypes = [];
 
   getFreeApartments() {
     fetch('http://localhost:3088/apartment/free')
       .then(res => res.json())
-      .then(json => {
-        console.log(json);
-        if (json) {
-          this.setFreeApartments(json);
-        }
-      })
+      .then(this.setFreeApartments)
   }
 
   setFreeApartments(apartments) {
@@ -24,12 +19,7 @@ class ApartmentStore {
   getRentedApartments() {
     fetch('http://localhost:3088/apartment/rented')
       .then(res => res.json())
-      .then(json => {
-        console.log(json);
-        if (json) {
-          this.setRentedApartments(json);
-        }
-      })
+      .then(this.setRentedApartments)
   }
 
   setRentedApartments(apartments) {
@@ -39,11 +29,7 @@ class ApartmentStore {
   getRepairTypes() {
     fetch('http://localhost:3088/apartment/get-repair-type') //edit
       .then(res => res.json())
-      .then(json => {
-        if (json) {
-          this.setRepairTypes(json);
-        }
-      })
+      .then(this.setRepairTypes)
   }
 
   setRepairTypes(repairTypes) {
@@ -105,17 +91,17 @@ class ApartmentStore {
 decorate(ApartmentStore, {
   freeApartments: observable,
   rentedAppartments: observable,
-  getFreeApartments: action.bound,
-  setFreeApartments: action,
-  getRentedApartments: action.bound,
-  setRentedApartments: action,
+  getFreeApartments: action,
+  setFreeApartments: action.bound,
+  getRentedApartments: action,
+  setRentedApartments: action.bound,
   addApartment: action,
   rentOutApartment: action,
   freeRentedApartment: action,
   removeApartment: action,
   editApartment: action,
   getRepairTypes: action,
-  setRepairTypes: action
+  setRepairTypes: action.bound
 })
 
 export default ApartmentStore;
