@@ -37,7 +37,7 @@ class ApartmentStore {
   }
 
   getRepairTypes() {
-    fetch('http://localhost:3088/apartment/free')
+    fetch('http://localhost:3088/apartment/get-repair-type') //edit
       .then(res => res.json())
       .then(json => {
         if (json) {
@@ -112,7 +112,10 @@ decorate(ApartmentStore, {
   addApartment: action,
   rentOutApartment: action,
   freeRentedApartment: action,
-  removeApartment: action
+  removeApartment: action,
+  editApartment: action,
+  getRepairTypes: action,
+  setRepairTypes: action
 })
 
 export default ApartmentStore;

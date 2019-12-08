@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, Dropdown } from 'react-bootstrap';
 import { Formik } from 'formik';
 import * as yup from "yup";
 
@@ -15,8 +15,10 @@ const validationSchema = yup.object({
   roomNumber: yup.number().required(),
 })
 
-
 const AddApartment = props => {
+  const add = apartment => props.store.addApartment(apartment);
+  const { repairTypes } = props.store.repairTypes;
+  console.log(repairTypes);
   return (
     <div>
       <Formik
@@ -38,7 +40,7 @@ const AddApartment = props => {
 
           console.log(apartment);
 
-          props.add(apartment)
+          add(apartment)
         }}
         validateOnChange={true}
         initialValues={{
@@ -46,7 +48,7 @@ const AddApartment = props => {
           rooms: 0,
           price: 0,
           yearOfConstruction: 1901,
-          repairType: '',
+          repairType: repairTypes[0],
           city: '',
           street: '',
           houseNumber: 0,
@@ -106,6 +108,19 @@ const AddApartment = props => {
                   isValid={touched.yearOfConstruction && !errors.yearOfConstruction}
                 >
                 </Form.Control>
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Repair type:</Form.Label>
+                <Dropdown>
+                  <Dropdown.Toggle variant="success" id="dropdown-basic">
+                    {values.repairType}
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    <Dropdown.Item>{repairTypes[0]}</Dropdown.Item>
+                    <Dropdown.Item>{repairTypes[1]}</Dropdown.Item>
+                    <Dropdown.Item>{repairTypes[2]}</Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
               </Form.Group>
             </Form.Row>
             <Form.Row>

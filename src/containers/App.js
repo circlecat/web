@@ -8,11 +8,11 @@ import AddApartment from '../components/AddApartment';
   componentDidMount() {
     this.props.store.getFreeApartments();
     this.props.store.getRentedApartments();
+    this.props.store.getRepairTypes();
   }
 
   rentOut = id => this.props.store.rentOutApartment(id);
   free = id => this.props.store.freeRentedApartment(id); 
-  add = apartment => this.props.store.addApartment(apartment);
   delete = id => this.props.store.removeApartment(id);
   edit = id => this.props.store;
 
@@ -37,7 +37,7 @@ import AddApartment from '../components/AddApartment';
     return (
       <Container>
         <Row>
-          <AddApartment add={this.add} />
+          <AddApartment store={this.props.store} />
         </Row>
         <br></br>
         <Row>
