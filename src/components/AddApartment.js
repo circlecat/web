@@ -22,6 +22,7 @@ const AddApartment = props => {
       <Formik
         onSubmit={value => {
           const { area, rooms, price, yearOfConstruction, city, street, houseNumber, roomNumber } = value;
+
           const apartment = {
             area,
             rooms,
@@ -34,6 +35,9 @@ const AddApartment = props => {
               roomNumber
             }
           }
+
+          console.log(apartment);
+
           props.add(apartment)
         }}
         validateOnChange={true}
@@ -57,7 +61,7 @@ const AddApartment = props => {
               <Form.Group>
                 <Form.Label>Area:</Form.Label>
                 <Form.Control
-                  type='text'
+                  type='number'
                   name='area'
                   placeholder='area'
                   value={values.area}
@@ -70,7 +74,7 @@ const AddApartment = props => {
               <Form.Group>
                 <Form.Label>Rooms:</Form.Label>
                 <Form.Control
-                  type='text'
+                  type='number'
                   name='rooms'
                   placeholder='rooms'
                   value={values.rooms}
