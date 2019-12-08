@@ -11,37 +11,18 @@ import AddApartment from '../components/AddApartment';
   }
 
   rentOut = id => this.props.store.rentOutApartment(id);
-
-  free = id => this.props.store.freeRentedApartment(id);
-  
+  free = id => this.props.store.freeRentedApartment(id); 
   add = apartment => this.props.store.addApartment(apartment);
-
   delete = id => this.props.store.removeApartment(id);
-
   edit = id => this.props.store;
 
-  renderList1 = () => (
+  renderList = (apartments, changeButtonClick) => (
     <ListGroup>
-      {this.props.store.freeApartments.map((el, id) => (
+      {apartments.map((el, id) => (
         <ListGroup.Item key={id}> 
           <Apartment
             data={el}
-            handleChangeButtonClick={this.rentOut}
-            handleDeleteButtonClick={this.delete}
-            handleEditButtonClick={this.edit}
-            ></Apartment>
-        </ListGroup.Item>
-      ))}
-    </ListGroup>
-  )
-
-  renderList2 = () => (
-    <ListGroup>
-      {this.props.store.rentedAppartments.map((el, id) => (
-        <ListGroup.Item key={id}> 
-          <Apartment 
-            data={el} 
-            handleChangeButtonClick={this.free}
+            handleChangeButtonClick={changeButtonClick}
             handleDeleteButtonClick={this.delete}
             handleEditButtonClick={this.edit}
             ></Apartment>
@@ -51,6 +32,8 @@ import AddApartment from '../components/AddApartment';
   )
 
   render() {
+    const { freeApartments, rentedAppartments } = this.props.store;
+
     return (
       <Container>
         <Row>
@@ -59,10 +42,10 @@ import AddApartment from '../components/AddApartment';
         <br></br>
         <Row>
           <Col>
-            {this.renderList1()}
+            {this.renderList(freeApartments, this.rentOut)}
           </Col>
           <Col>
-            {this.renderList2()}
+            {this.renderList(rentedAppartments, this.free)}
           </Col>
         </Row>
       </Container>
