@@ -65,12 +65,17 @@ const AddOrEditApartment = props => {
             roomNumber
           }
         }
+
+        let res;
+
         if (isBeingEdited) {
-          props.store.editApartment(apartment);
+          res = props.store.editApartment(apartment);
           setBeingEdited();
         } else {
-          props.store.addApartment(apartment);
+          res = props.store.addApartment(apartment);
         }
+
+        console.log(res);
       }}
       validateOnChange={true}
       initialValues={initialValues}

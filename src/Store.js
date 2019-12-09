@@ -1,4 +1,5 @@
 import { observable, configure, action, decorate } from 'mobx';
+import axios from 'axios';
 configure({ enforceActions: 'observed' });
 
 class ApartmentStore {
@@ -7,8 +8,8 @@ class ApartmentStore {
   repairTypes = [];
 
   getFreeApartments() {
-    fetch('http://localhost:3088/apartment/free')
-      .then(res => res.json())
+    axios.get('http://localhost:3088/apartment/free')
+      .then(res => res.data)
       .then(this.setFreeApartments)
   }
 
@@ -17,8 +18,8 @@ class ApartmentStore {
   }
 
   getRentedApartments() {
-    fetch('http://localhost:3088/apartment/rented')
-      .then(res => res.json())
+    axios.get('http://localhost:3088/apartment/rented')
+      .then(res => res.data)
       .then(this.setRentedApartments)
   }
 
@@ -27,8 +28,8 @@ class ApartmentStore {
   }
 
   getRepairTypes() {
-    fetch('http://localhost:3088/apartment/get-repair-type') //edit
-      .then(res => res.json())
+    axios.get('http://localhost:3088/apartment/get-repair-type') //edit
+      .then(res => res.data)
       .then(this.setRepairTypes)
   }
 
@@ -37,22 +38,16 @@ class ApartmentStore {
   }
 
   addApartment(apartment) {
-    fetch('http://localhost:3088/apartment/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(apartment)
-    })
-      .then(json => {
+    axios.post('http://localhost:3088/apartment/', apartment)
+      .then(() => {
         this.getRentedApartments();
         this.getFreeApartments()
       })
-      .catch(reason => reason)
+      .catch(err => err.response.data)
   }
 
   rentOutApartment(id) {
-    fetch(`http://localhost:3088/apartment/rent-out/${id}`)
+    axios.get(`http://localhost:3088/apartment/rent-out/${id}`)
       .then(() => {
         this.getRentedApartments();
         this.getFreeApartments()
@@ -60,7 +55,7 @@ class ApartmentStore {
   }
 
   freeRentedApartment(id) {
-    fetch(`http://localhost:3088/apartment/stop-rent-out/${id}`)
+    axios.get(`http://localhost:3088/apartment/stop-rent-out/${id}`)
       .then(() => {
         this.getRentedApartments();
         this.getFreeApartments()
@@ -68,7 +63,7 @@ class ApartmentStore {
   }
 
   removeApartment(id) {
-    fetch(`http://localhost:3088/apartment/${id}`, {
+    axios.delete(`http://localhost:3088/apartment/${id}`, {
       method: 'DELETE'
     })
       .then(() => {
@@ -78,17 +73,12 @@ class ApartmentStore {
   }
 
   editApartment(apartment) {
-    fetch(`http://localhost:3088/apartment/`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(apartment) 
-    })
-      .then(() => {
+    axios.put(`http://localhost:3088/apartment/`, apartment)
+      .then(res => {
         this.getRentedApartments();
         this.getFreeApartments()
       })
+      .catch(err => err.response.data)
   }
 }
 
