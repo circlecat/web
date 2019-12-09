@@ -45,10 +45,10 @@ class ApartmentStore {
       body: JSON.stringify(apartment)
     })
       .then(json => {
-        console.log(json);
         this.getRentedApartments();
         this.getFreeApartments()
       })
+      .catch(reason => reason)
   }
 
   rentOutApartment(id) {
@@ -79,7 +79,11 @@ class ApartmentStore {
 
   editApartment(apartment) {
     fetch(`http://localhost:3088/apartment/`, {
-      method: 'PUT'
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(apartment) 
     })
       .then(() => {
         this.getRentedApartments();

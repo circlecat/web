@@ -15,50 +15,70 @@ const validationSchema = yup.object({
   roomNumber: yup.number().required().min(1).max(1000),
 })
 
-const AddApartment = props => {
+const AddOrEditApartment = props => {
+  const { isBeingEdited, setBeingEdited, data } = props;
   const { repairTypes } = props.store;
-  console.log(repairTypes);
 
+  let initialValues = {
+    area: 0,
+    rooms: 0,
+    price: 0,
+    yearOfConstruction: 1901,
+    repairType: repairTypes[0],
+    city: '',
+    street: '',
+    houseNumber: 0,
+    roomNumber: 0,
+  }
+
+  if (isBeingEdited && data) {
+    initialValues = {
+      area: data.area,
+      rooms: data.rooms,
+      price: data.price,
+      yearOfConstruction: data.yearOfConstruction,
+      repairType: repairTypes[0],
+      city: data.address.city,
+      street: data.address.street,
+      houseNumber: data.address.houseNumber,
+      roomNumber: data.address.roomNumber,
+    }
+  }
+  
   return (
     <Formik
       onSubmit={value => {
         const { area, rooms, price, yearOfConstruction, city, street, houseNumber, roomNumber, repairType } = value;
-        console.log(repairType);
+
         const apartment = {
+          id: props.data ? props.data.id : undefined,
           area,
           rooms,
           price,
           yearOfConstruction,
           repairType,
           address: {
+            id: props.data ? props.data.address.id : undefined,
             city,
             street,
             houseNumber,
             roomNumber
           }
         }
-
-        console.log(apartment);
-
-        props.store.addApartment(apartment);
+        if (isBeingEdited) {
+          props.store.editApartment(apartment);
+          setBeingEdited();
+        } else {
+          props.store.addApartment(apartment);
+        }
       }}
       validateOnChange={true}
-      initialValues={{
-        area: 0,
-        rooms: 0,
-        price: 0,
-        yearOfConstruction: 1901,
-        repairType: repairTypes[0],
-        city: '',
-        street: '',
-        houseNumber: 0,
-        roomNumber: 0,
-      }}
+      initialValues={initialValues}
       validationSchema={validationSchema}
     >
       {({ values, errors, handleChange, handleSubmit, handleBlur, isValid, touched, isInvalid }) => (
         <Form noValidate onSubmit={handleSubmit}>
-          <h3>New Apartment</h3>
+          <h3>{isBeingEdited ? 'Edit apartment' : 'New Apartment'}</h3>
           <Form.Row>
             <Form.Group>
               <Form.Label>Area:</Form.Label>
@@ -211,11 +231,11 @@ const AddApartment = props => {
               </Form.Control.Feedback>
             </Form.Group>
           </Form.Row>
-          <Button type="submit">Add</Button>
+          <Button type="submit">{isBeingEdited ? 'Save' : 'Add'}</Button>
         </Form>
       )}
     </Formik>
   )
 }
 
-export default AddApartment;
+export default AddOrEditApartment;

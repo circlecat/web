@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
+import AddOrEditApartment from './AddOrEditApartment';
 
 const Apartment = props => {
-  const { handleChangeButtonClick, handleDeleteButtonClick, handleEditButtonClick } = props;
+  const { handleChangeButtonClick, handleDeleteButtonClick } = props; //rewrite to store
   const { id, area, rooms, price, yearOfConstruction, repairType, address, isRented, rentStartDate, rentEndDate } = props.data;
+
+  const [isBeingEdited, setBeingEdited] = useState(false);
 
   return (
     <Container>
+      {isBeingEdited ? <AddOrEditApartment data={props.data} isBeingEdited store={props.store} setBeingEdited={() => setBeingEdited(false)} /> : 
       <Row>
         <Col>
           Apartment:
@@ -31,10 +35,11 @@ const Apartment = props => {
         </Col>
         <Col>
           <Button onClick={() => handleChangeButtonClick(id)} >{isRented ? "Cancel" : 'Rent Out'}</Button>
-          <Button style={{ backgroundColor: 'green' }} onClick={() => handleEditButtonClick(id)} >Edit</Button>
+          <Button style={{ backgroundColor: 'green' }} onClick={() => setBeingEdited(true)} >Edit</Button>
           <Button style={{ backgroundColor: 'red' }} onClick={() => handleDeleteButtonClick(id)} >Delete</Button>
         </Col>
-      </Row>
+      </Row>}
+      
     </Container>
   )
 }

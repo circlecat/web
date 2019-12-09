@@ -2,7 +2,7 @@ import React from 'react';
 import { Container, ListGroup, Row, Col } from 'react-bootstrap';
 import { observer } from 'mobx-react';
 import Apartment from '../components/Apartment'
-import AddApartment from '../components/AddApartment';
+import AddOrEditApartment from '../components/AddOrEditApartment';
 
 @observer class App extends React.Component {
   componentDidMount() {
@@ -14,7 +14,6 @@ import AddApartment from '../components/AddApartment';
   rentOut = id => this.props.store.rentOutApartment(id);
   free = id => this.props.store.freeRentedApartment(id); 
   delete = id => this.props.store.removeApartment(id);
-  edit = id => this.props.store;
 
   renderList = (apartments, changeButtonClick) => (
     <ListGroup>
@@ -24,7 +23,7 @@ import AddApartment from '../components/AddApartment';
             data={el}
             handleChangeButtonClick={changeButtonClick}
             handleDeleteButtonClick={this.delete}
-            handleEditButtonClick={this.edit}
+            store={this.props.store}
             ></Apartment>
         </ListGroup.Item>
       ))}
@@ -37,7 +36,7 @@ import AddApartment from '../components/AddApartment';
     return (
       <Container>
         <Row>
-          <AddApartment store={this.props.store} />
+          <AddOrEditApartment store={this.props.store} />
         </Row>
         <br></br>
         <Row>
