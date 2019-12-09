@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { Formik } from 'formik';
 import * as yup from "yup";
@@ -16,6 +16,8 @@ const validationSchema = yup.object({
 })
 
 const AddOrEditApartment = props => {
+  const [addressError, setAddressError] = useState(false);
+
   const { isBeingEdited, setBeingEdited, data } = props;
   const { repairTypes } = props.store;
 
@@ -46,7 +48,7 @@ const AddOrEditApartment = props => {
   }
   
   return (
-    <Formik
+    <Formik 
       onSubmit={value => {
         const { area, rooms, price, yearOfConstruction, city, street, houseNumber, roomNumber, repairType } = value;
 
@@ -66,16 +68,21 @@ const AddOrEditApartment = props => {
           }
         }
 
-        let res;
-
         if (isBeingEdited) {
-          res = props.store.editApartment(apartment);
-          setBeingEdited();
+          props.store.editApartment(apartment).then(res => {
+            if (res === 'ADDRESS_ALREADY_EXIST') {
+              setAddressError(true); 
+            } else {
+              setBeingEdited();
+            }
+          });
+          
         } else {
-          res = props.store.addApartment(apartment);
+          props.store.addApartment(apartment).then(res => {
+            if (res === 'ADDRESS_ALREADY_EXIST')
+            setAddressError(true);
+          });
         }
-
-        console.log(res);
       }}
       validateOnChange={true}
       initialValues={initialValues}
@@ -234,8 +241,9 @@ const AddOrEditApartment = props => {
               <Form.Control.Feedback type="invalid">
                 {errors.roomNumber}
               </Form.Control.Feedback>
-            </Form.Group>
+            </Form.Group> 
           </Form.Row>
+          {addressError && <div style={{color: 'red'}}>Address already exist.</div>}
           <Button type="submit">{isBeingEdited ? 'Save' : 'Add'}</Button>
         </Form>
       )}

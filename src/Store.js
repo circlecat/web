@@ -8,7 +8,7 @@ class ApartmentStore {
   repairTypes = [];
 
   getFreeApartments() {
-    axios.get('http://localhost:3088/apartment/free')
+    return axios.get('http://localhost:3088/apartment/free')
       .then(res => res.data)
       .then(this.setFreeApartments)
   }
@@ -18,7 +18,7 @@ class ApartmentStore {
   }
 
   getRentedApartments() {
-    axios.get('http://localhost:3088/apartment/rented')
+    return axios.get('http://localhost:3088/apartment/rented')
       .then(res => res.data)
       .then(this.setRentedApartments)
   }
@@ -28,7 +28,7 @@ class ApartmentStore {
   }
 
   getRepairTypes() {
-    axios.get('http://localhost:3088/apartment/get-repair-type') //edit
+    return axios.get('http://localhost:3088/apartment/get-repair-type') //edit
       .then(res => res.data)
       .then(this.setRepairTypes)
   }
@@ -38,7 +38,7 @@ class ApartmentStore {
   }
 
   addApartment(apartment) {
-    axios.post('http://localhost:3088/apartment/', apartment)
+    return axios.post('http://localhost:3088/apartment/', apartment)
       .then(() => {
         this.getRentedApartments();
         this.getFreeApartments()
@@ -47,7 +47,7 @@ class ApartmentStore {
   }
 
   rentOutApartment(id) {
-    axios.get(`http://localhost:3088/apartment/rent-out/${id}`)
+    return axios.get(`http://localhost:3088/apartment/rent-out/${id}`)
       .then(() => {
         this.getRentedApartments();
         this.getFreeApartments()
@@ -55,7 +55,7 @@ class ApartmentStore {
   }
 
   freeRentedApartment(id) {
-    axios.get(`http://localhost:3088/apartment/stop-rent-out/${id}`)
+    return axios.get(`http://localhost:3088/apartment/stop-rent-out/${id}`)
       .then(() => {
         this.getRentedApartments();
         this.getFreeApartments()
@@ -63,7 +63,7 @@ class ApartmentStore {
   }
 
   removeApartment(id) {
-    axios.delete(`http://localhost:3088/apartment/${id}`, {
+    return axios.delete(`http://localhost:3088/apartment/${id}`, {
       method: 'DELETE'
     })
       .then(() => {
@@ -73,7 +73,7 @@ class ApartmentStore {
   }
 
   editApartment(apartment) {
-    axios.put(`http://localhost:3088/apartment/`, apartment)
+    return axios.put(`http://localhost:3088/apartment/`, apartment)
       .then(res => {
         this.getRentedApartments();
         this.getFreeApartments()

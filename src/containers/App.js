@@ -34,7 +34,7 @@ import AddOrEditApartment from '../components/AddOrEditApartment';
     return (
       <Container>
         <Row>
-          <AddOrEditApartment store={this.props.store} />
+          <AddOrEditApartment key={Math.random*1000} store={this.props.store} />
         </Row>
         <br></br>
         <Row>
