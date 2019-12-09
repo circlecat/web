@@ -6,9 +6,9 @@ import AddApartment from '../components/AddApartment';
 
 @observer class App extends React.Component {
   componentDidMount() {
+    this.props.store.getRepairTypes();
     this.props.store.getFreeApartments();
     this.props.store.getRentedApartments();
-    this.props.store.getRepairTypes();
   }
 
   rentOut = id => this.props.store.rentOutApartment(id);
