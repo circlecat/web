@@ -3,10 +3,13 @@ import { Container, Row, Col, Button } from 'react-bootstrap';
 import AddOrEditApartment from './AddOrEditApartment';
 
 const Apartment = props => {
-  const { handleChangeButtonClick, handleDeleteButtonClick } = props; //rewrite to store
+  const { handleChangeButtonClick } = props;
+
   const { id, area, rooms, price, yearOfConstruction, repairType, address, isRented, rentStartDate, rentEndDate } = props.data;
 
   const [isBeingEdited, setBeingEdited] = useState(false);
+
+  const removeApartment = id => props.store.removeApartment(id);
 
   return (
     <Container>
@@ -36,7 +39,7 @@ const Apartment = props => {
         <Col>
           <Button onClick={() => handleChangeButtonClick(id)} >{isRented ? "Cancel" : 'Rent Out'}</Button>
           <Button style={{ backgroundColor: 'green' }} onClick={() => setBeingEdited(true)} >Edit</Button>
-          <Button style={{ backgroundColor: 'red' }} onClick={() => handleDeleteButtonClick(id)} >Delete</Button>
+          <Button style={{ backgroundColor: 'red' }} onClick={() => removeApartment(id)} >Delete</Button>
         </Col>
       </Row>}
       

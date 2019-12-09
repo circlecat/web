@@ -13,7 +13,6 @@ import AddOrEditApartment from '../components/AddOrEditApartment';
 
   rentOut = id => this.props.store.rentOutApartment(id);
   free = id => this.props.store.freeRentedApartment(id); 
-  delete = id => this.props.store.removeApartment(id);
 
   renderList = (apartments, changeButtonClick) => (
     <ListGroup>
@@ -22,7 +21,6 @@ import AddOrEditApartment from '../components/AddOrEditApartment';
           <Apartment
             data={el}
             handleChangeButtonClick={changeButtonClick}
-            handleDeleteButtonClick={this.delete}
             store={this.props.store}
             ></Apartment>
         </ListGroup.Item>
